@@ -137,6 +137,12 @@ async function uploadMiddleware(ctx, next) {
 
 在中间件`uploadMiddleware`，我们使用`upload.fields`这个方法，对文件进行混合上传，这样整个系统都可以使用这个中间件，如果有新的上传接口，只需在`upload.fields`里添加上传接口的新字段就可以了。
 
+### 在上传文件接口引用中间件uploadMiddleware
+
+```
+router.post('/book', uploadMiddleware, indexController.createBook);
+```
+
 
 ### 最后对multer对象封装
 
