@@ -27,9 +27,12 @@ const xmlToJson = (xmlObj) => {
   return parserXmlToJson.parse(xmlObj);
 };
 
-const jsonToXml = (jsonObj) => {
+const jsonToXml = (jsonObj, isHeader = false) => {
   const xmlHeader = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>';
-  return xmlHeader + parserJsonToXml.parse(jsonObj);
+  if (isHeader) {
+    return xmlHeader + parserJsonToXml.parse(jsonObj);
+  }
+  return parserJsonToXml.parse(jsonObj);
 };
 
 // 测试
