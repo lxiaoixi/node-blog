@@ -244,6 +244,23 @@ get('callinfo').then(function(result){
 
 ## redis集群原理
 
+### Key分配模型
+`Redis Cluster`共划分为16384个槽位。这也意味着一个集群最多可以有16384个`master`，不过官方建议`master`的最大数量是1000个。
+如果`Cluster`不处于重新配置过程，那么就会达到一种稳定状态。在稳定状态下，一个槽位只由一个`master`提供服务，不过一个`master`节点会有一个或多个`slave`，这些`slave`可以提供缓解`master`的读请求的压力。<br>
+
+`Redis Cluster`会对`key`使用`CRC16`算法进行`hash`，然后对16384取模来确定key所属的槽位（`hash tag`会打破这种规则）。
+
+### Keys hash tags
+
+标签是破坏上述计算规则的实现，`Hash tag`是一种**保证多个键被分配到同一个槽位**的方法。
+`hash tag`的计算规则是：取一对大括号{}之间的字符进行计算，如果`key`存在多对大括号，那么就取第一个左括号和第一个右括号之间的字符。如果大括号之前没有字符，则会对整个字符串进行计算。
+
+```
+{Jackeyzhe}.following和{Jackeyzhe}.follower这两个key都是计算Jackeyzhe的hash值
+foo{{bar}}这个key就会对{bar进行hash计算
+follow{}{Jackey}会对整个字符串进行计算
+```
+
 参考：
 
 * https://www.jianshu.com/p/c869feb5581d
