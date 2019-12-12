@@ -282,3 +282,26 @@ rs.on('end',function(){
   console.log(buf.toString('utf8'));
 })
 ```
+
+# 按行读取文件内容
+
+```
+const readline = require('readline');
+const fs = require('fs');
+let input = fs.createReadStream('./XSGL_SALES_CODE_SDS.20191126.000000.0000.dat', {encoding: 'binary'})
+const rl = readline.createInterface({
+  input: input
+  });
+  rl.on('line', (line) => {
+    // console.log(`Line from file: ${line}`);
+      let buf = Buffer.from(line, 'binary')
+        // console.log(buf.toString('utf8'))
+	  console.log(buf.slice(95, 110).toString())
+	    console.log(buf.slice(943, 946).toString());
+	    });
+	    rl.on('close', (line) => {
+	      console.log("读取完毕！");
+	      });
+	      ```
+
+	      > 默认读取的line为字符串类型。若需要将字符串转换为buffer类型, 尽量使用二进制编码，防止因文件编码导致结果不对，其中fs.createReadStream() 和Buffer.from() 中的编码要一致，最好均为'binary'。
