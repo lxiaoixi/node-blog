@@ -1,0 +1,37 @@
+正则
+
+1.字符串前后去空格：trim()
+2.换行符统一： linux 是\r\n, window是\n, 正则统一替换所有的\r\n为\n
+	content.replace(/\r\n/g,'\n');
+3.test() 方法
+	
+  检索文本中是否存在关键词，存在返回true,不存在返回false
+  
+  var words = '(苹果|香蕉)'
+  var patt = new RegExp(`${words}`, "g")
+  console.log(patt.test(content))
+  
+4.match() 方法
+
+ 存放匹配结果的数组。该数组的内容依赖于 regexp 是否具有全局标志 g。若无全局标志 g，则只匹配一次
+	let word = '不需要'
+	var patt1 = new RegExp(`(0|1)]\\s*\\S*${word}`, "g");
+	let lines = content.match(patt1)
+	console.log(lines)
+ lines 结果是个数组， 存放的是所有符合patt1规则的语句。
+ 
+ [ 
+  '1]  我们跟她回答了我现在不需要',
+  '0]  您这边是有别的，您是说这边费不需要',
+  '1]  行李有些很快不需要',
+  '0]  不需要'
+ ]
+
+5.exec() 方法
+
+  同match()一样，返回匹配结果的数组。但是该数组并不是所有规则语句，只是一个语句，存放该语句的详细信息，包括匹配语句、语句位置、检索的文本,
+  所以exec()需要使用while循环来匹配多条。
+  while ((result = patt.exec(content)) != null)  {
+    console.log(result)
+  }
+ 
